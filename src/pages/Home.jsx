@@ -17,7 +17,6 @@ function Home() {
       <Works/>
       <Experience/>
       <Contactus/>
-      <Footer/>
     </div>
   )
 }
