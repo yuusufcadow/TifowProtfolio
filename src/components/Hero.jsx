@@ -1,203 +1,277 @@
-// Hero.jsx
-import React, { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Linkedin,
+  Instagram,
+  Facebook,
+  Video,
+  Clapperboard,
+  WandSparkles,
+  Asterisk,
+  Camera,
+} from "lucide-react";
+
 import image from "../assets/image.png";
 
-export default function Hero() {
-  const [show, setShow] = useState(false);
+const socialLinks = [
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@hussein.tifow",
+    type: "tiktok",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/hussein-tifow-60aa55315/",
+    Icon: Linkedin,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/josephkabila15/",
+    Icon: Instagram,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/josephkabila15",
+    Icon: Facebook,
+  },
+];
 
-  useEffect(() => {
-    const t = setTimeout(() => setShow(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+const specialties = [
+  { label: "Video Editing", Icon: Clapperboard },
+  { label: "Videography", Icon: Video },
+  { label: "Motion Graphics", Icon: WandSparkles },
+];
 
-  // ✅ your real social links
-  const SOCIAL = {
-    tiktok: "https://www.tiktok.com/@hussein.tifow?_r=1&_t=ZS-93iwBlVjjSZ",
-    linkedin:
-      "https://www.linkedin.com/in/hussein-tifow-60aa55315?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-    instagram: "https://www.instagram.com/josephkabila15/",
-    facebook: "https://www.facebook.com/josephkabila15",
-  };
+const marqueeItems = [
+  "VIDEO EDITING",
+  "VIDEOGRAPHY",
+  "MOTION GRAPHICS",
+  "CAMERA OPERATION",
+  "GRAPHIC DESIGN",
+  "VISUAL STORYTELLING",
+];
 
+function TikTokIcon() {
   return (
-    <section id="home" className="w-full bg-white">
-      <div className="mx-auto container px-4 py-10 md:py-16">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          {/* LEFT */}
-          <div className="order-2 lg:order-1">
-            <p
-              className={[
-                "text-black/70 transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{ fontSize: "clamp(16px, 1.6vw, 18px)" }}
-            >
-              Hi I’m <span className="text-black">Hussein</span>
-            </p>
-
-            <h1
-              className={[
-                "mt-1 font-extrabold leading-[1.05] text-black transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{
-                fontSize: "clamp(34px, 4.2vw, 56px)",
-                transitionDelay: "80ms",
-              }}
-            >
-              Mohamednor <span className="text-black">Tifow</span>
-            </h1>
-
-            <h2
-              className={[
-                "mt-5 font-extrabold text-black transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{
-                fontSize: "clamp(22px, 2.8vw, 40px)",
-                transitionDelay: "140ms",
-              }}
-            >
-              Cameroperator Videographer{" "}
-              <span className="whitespace-nowrap">Designer</span>
-            </h2>
-
-            <p
-              className={[
-                "mt-5 max-w-xl leading-relaxed text-black/60 transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{
-                fontSize: "clamp(15px, 1.7vw, 18px)",
-                transitionDelay: "200ms",
-              }}
-            >
-              I’m a creative multimedia professional with 3+ years of experience
-              in video production, motion graphics, design, and digital marketing.
-              I help brands, businesses, and creators tell powerful stories through
-              visuals that connect, engage, and convert.
-            </p>
-
-            {/* CTA + Social */}
-            <div
-              className={[
-                "mt-7 flex flex-wrap items-center gap-4 transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{ transitionDelay: "260ms" }}
-            >
-              <a
-                href="#projects"
-                className="rounded-full border border-[#9B1C1C]/40 px-6 py-3 text-sm font-semibold text-black transition hover:border-[#9B1C1C] hover:bg-[#9B1C1C]/5 active:scale-[0.99]"
-              >
-                Explore for you
-              </a>
-
-              <div className="flex items-center gap-3">
-                <SocialIcon href={SOCIAL.linkedin} label="LinkedIn">
-                  <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 21h4V9H3v12ZM9 9h3.8v1.7h.1c.5-1 1.8-2.1 3.8-2.1 4 0 4.8 2.6 4.8 6.1V21h-4v-5.2c0-1.2 0-2.7-1.7-2.7s-2 1.3-2 2.6V21H9V9Z" />
-                </SocialIcon>
-
-                <SocialIcon href={SOCIAL.facebook} label="Facebook">
-                  <path d="M13.5 22v-8h2.7l.5-3h-3.2V9.1c0-.9.3-1.6 1.7-1.6h1.7V4.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.3 1.6-4.3 4.5V11H7.3v3h2.4v8h3.8Z" />
-                </SocialIcon>
-
-                <SocialIcon href={SOCIAL.instagram} label="Instagram">
-                  <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9Z" />
-                  <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
-                  <path d="M17.6 6.8a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
-                </SocialIcon>
-
-                <SocialIcon href={SOCIAL.tiktok} label="TikTok">
-                  <path d="M16.5 3c.6 2.8 2.4 4.7 5 4.9v3a8.3 8.3 0 0 1-4.9-1.7V16a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.3a2.7 2.7 0 1 0 2 2.6V3h2.9Z" />
-                </SocialIcon>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT IMAGE */}
-          <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
-            <div
-              className={[
-                "relative transition-all duration-700 ease-out",
-                show ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-[0.98]",
-              ].join(" ")}
-              style={{ transitionDelay: "180ms" }}
-            >
-              <div className="h-[240px] w-[240px] overflow-hidden rounded-full border border-black/10 bg-white shadow-sm sm:h-[320px] sm:w-[320px] md:h-[380px] md:w-[380px]">
-                <img
-                  src={image}
-                  alt="Profile"
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
-                />
-              </div>
-
-              <div className="pointer-events-none absolute -inset-3 rounded-full border border-[#9B1C1C]/20" />
-            </div>
-          </div>
-        </div>
-
-        {/* STATS */}
-        <div className="mt-12 border-t border-black/10 pt-8">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <FadeUp show={show} delay={320}>
-              <Stat value="3+" label="Years Experience" />
-            </FadeUp>
-            <FadeUp show={show} delay={380}>
-              <Stat value="150+" label="Projects Completed" />
-            </FadeUp>
-            <FadeUp show={show} delay={440}>
-              <Stat value="75+" label="Happy Clients" />
-            </FadeUp>
-            <FadeUp show={show} delay={500}>
-              <Stat value="35+" label="Creative Skills" />
-            </FadeUp>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FadeUp({ show, delay = 0, children }) {
-  return (
-    <div
-      className={[
-        "transition-all duration-700",
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-      ].join(" ")}
-      style={{ transitionDelay: `${delay}ms` }}
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-[18px] w-[18px]"
+      aria-hidden="true"
     >
-      {children}
-    </div>
+      <path d="M16.5 3c.6 2.8 2.4 4.7 5 4.9v3a8.3 8.3 0 0 1-4.9-1.7V16a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.3a2.7 2.7 0 1 0 2 2.6V3h2.9Z" />
+    </svg>
   );
 }
 
-function Stat({ value, label }) {
-  return (
-    <div className="flex items-end gap-3 rounded-xl p-2">
-      <div className="font-extrabold text-black" style={{ fontSize: "clamp(36px, 4.2vw, 56px)" }}>
-        {value}
-      </div>
-      <div className="pb-1 text-sm font-semibold leading-tight text-black/70">
-        {label}
-      </div>
-    </div>
-  );
-}
+function SocialButton({ social }) {
+  const Icon = social.Icon;
 
-function SocialIcon({ href, label, children }) {
   return (
     <a
-      href={href}
+      href={social.href}
       target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      className="grid h-11 w-11 place-items-center rounded-full border border-[#9B1C1C]/25 text-[#9B1C1C] transition hover:bg-[#9B1C1C]/10 hover:scale-[1.03] active:scale-[0.98]"
+      rel="noopener noreferrer"
+      aria-label={social.label}
+      title={social.label}
+      className="flex h-10 w-10 items-center justify-center border border-line bg-page text-zinc-600 transition-colors duration-200 hover:border-brand hover:text-brand dark:text-zinc-300"
     >
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-        {children}
-      </svg>
+      {social.type === "tiktok" ? (
+        <TikTokIcon />
+      ) : (
+        <Icon size={18} strokeWidth={1.8} />
+      )}
     </a>
+  );
+}
+
+function MarqueeItems({ duplicate = false }) {
+  return (
+    <div
+      className="flex shrink-0 items-center"
+      aria-hidden={duplicate ? "true" : undefined}
+    >
+      {marqueeItems.map((item) => (
+        <div
+          key={item}
+          className="flex shrink-0 items-center"
+        >
+          <span className="shrink-0 whitespace-nowrap px-5 text-[18px] font-semibold uppercase tracking-[0.045em] text-white sm:px-8 sm:text-[24px] lg:px-10 lg:text-[27px]">
+            {item}
+          </span>
+
+          <Asterisk
+            aria-hidden="true"
+            strokeWidth={4}
+            className="h-7 w-7 shrink-0 text-white sm:h-9 sm:w-9 lg:h-10 lg:w-10"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CreativeMarquee() {
+  return (
+    <div
+      className="tifow-road-section relative isolate w-full overflow-hidden "
+      aria-label="Creative specialties"
+    >
+      <div className="tifow-road-ribbon relative overflow-hidden bg-brand">
+        <div
+          className="tifow-road-marking"
+          aria-hidden="true"
+        />
+
+        <div className="tifow-marquee-track relative z-10 flex w-max items-center py-5 sm:py-6">
+          <MarqueeItems />
+          <MarqueeItems duplicate />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Hero() {
+  return (
+    <>
+      <section className="hero-grid relative isolate overflow-hidden bg-page">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-6">
+          <div className="grid min-h-[calc(100svh-76px-100px)] items-center gap-12 py-14 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16 lg:py-16">
+
+            {/* Main introduction — first on mobile */}
+            <div className="order-1 min-w-0">
+              <div className="mb-7 inline-flex items-center gap-2 border border-line bg-page px-3 py-2">
+                <span className="h-2 w-2 shrink-0 bg-brand" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-300">
+                  Creative Multimedia Professional
+                </span>
+              </div>
+
+              <p className="text-[15px] font-medium text-zinc-500 dark:text-zinc-400 sm:text-[16px]">
+                Hello, I'm Hussein
+              </p>
+
+              <h2 className="mt-2 text-[clamp(25px,3vw,38px)] font-semibold tracking-[-0.04em] text-zinc-900 dark:text-white">
+                Mohamednor Tifow
+              </h2>
+
+              <h1 className="mt-5 text-[clamp(44px,5.5vw,82px)] font-semibold leading-[1.05] tracking-[-0.055em] text-zinc-950 dark:text-white">
+                Multimedia
+                <br />
+                <span className="text-brand">
+                  Specialist.
+                </span>
+              </h1>
+
+              <p className="mt-7 max-w-[590px] text-[15px] leading-[1.85] text-zinc-600 dark:text-zinc-400 sm:text-[16px]">
+                I'm a multimedia specialist with experience
+                in video editing, videography, motion graphics,
+                and graphic design. From documentaries and
+                social media campaigns to commercial productions,
+                I create visual stories that connect brands
+                with their audiences.
+              </p>
+
+              {/* Expertise */}
+              <div className="mt-7 flex flex-wrap gap-2">
+                {specialties.map(({ label, Icon }) => (
+                  <span
+                    key={label}
+                    className="inline-flex min-h-9 items-center gap-2 border border-line bg-page px-3 text-[12px] font-medium text-zinc-700 dark:text-zinc-300"
+                  >
+                    <Icon
+                      size={15}
+                      strokeWidth={1.8}
+                      className="text-brand"
+                    />
+                    {label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Main CTA buttons */}
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/projects"
+                  className="group inline-flex h-12 items-center justify-center gap-3 rounded-full bg-[#9B1C1C] pl-6 pr-2 text-[14px] font-semibold !text-white transition-colors duration-200 hover:bg-[#B32626] dark:!text-white"
+                >
+                  <span className="!text-white">
+                    Explore My Work
+                  </span>
+
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 text-white transition-transform duration-200 group-hover:translate-x-0.5">
+                    <ArrowUpRight size={17} strokeWidth={1.9} />
+                  </span>
+                </Link>
+
+                <Link
+                  to="/about"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-line bg-page px-6 text-[14px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-brand dark:text-white"
+                >
+                  About Me
+                  <ArrowRight size={17} strokeWidth={1.8} />
+                </Link>
+              </div>
+
+              {/* Social links */}
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <span className="text-[12px] font-medium text-zinc-500 dark:text-zinc-400">
+                  Connect with me
+                </span>
+
+                <div className="flex items-center gap-2">
+                  {socialLinks.map((social) => (
+                    <SocialButton
+                      key={social.label}
+                      social={social}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Profile portrait — second on mobile */}
+            <div className="order-2 flex min-w-0 justify-center pb-7 lg:justify-end">
+              <div className="relative w-full max-w-[320px] sm:max-w-[390px] lg:max-w-[470px]">
+
+                <div
+                  aria-hidden="true"
+                  className="absolute -bottom-3 -right-3 h-full w-full border border-brand/40"
+                />
+
+                <div className="relative aspect-[4/4.7] overflow-hidden border border-line bg-surface">
+                  <img
+                    src={image}
+                    alt="Hussein Mohamednor Tifow — Multimedia Specialist"
+                    fetchPriority="high"
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+
+                <div className="absolute -bottom-5 left-2 flex max-w-[calc(100%-16px)] items-center gap-3 border border-line bg-page px-3 py-3 sm:-left-5 sm:px-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-brand text-white">
+                    <Camera size={19} strokeWidth={1.8} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold text-zinc-900 dark:text-white">
+                      Multimedia Specialist
+                    </p>
+                    <p className="mt-0.5 text-[11px] leading-5 text-zinc-500 dark:text-zinc-400">
+                      Video Production & Creative Design
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CreativeMarquee />
+    </>
   );
 }

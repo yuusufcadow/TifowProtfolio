@@ -1,215 +1,416 @@
-// Navbar.jsx
-import React, { useEffect, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import {
+  ArrowUpRight,
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Linkedin,
+} from "lucide-react";
+
+import { useTheme } from "../context/ThemeContext";
 import logo from "../assets/logo.png";
 
+// Navigation routes
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Education", href: "#education" },
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Services", path: "/services" },
+  { label: "Experience", path: "/experience" },
+  { label: "Projects", path: "/projects" },
 ];
 
+// Official social profile links
+const socialLinks = [
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@hussein.tifow",
+    icon: "tiktok",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/hussein-tifow-60aa55315/",
+    icon: "linkedin",
+  },
+];
+
+// TikTok icon (Lucide does not provide a brand TikTok icon)
+function TikTokIcon({ size = 18, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12.525 0h4.082c.067 2.396 1.293 4.16 3.707 4.416v4.13c-1.43.132-2.682-.33-3.707-1.13v8.488c0 4.26-3.498 7.096-7.438 6.936-3.5-.142-6.44-3.106-6.45-6.61-.012-4.04 3.128-7.224 7.137-7.224.393 0 .786.03 1.175.09v4.22c-2.11-.68-4.115.828-4.1 2.882.01 1.55 1.278 2.79 2.828 2.79 1.69 0 2.766-1.15 2.766-2.95V0Z" />
+    </svg>
+  );
+}
+
+// Social icon renderer
+function SocialIcon({ type, size = 18 }) {
+  if (type === "tiktok") {
+    return <TikTokIcon size={size} />;
+  }
+
+  return <Linkedin size={size} strokeWidth={1.8} />;
+}
+
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
+  const location = useLocation();
 
-  // lock scroll when mobile menu open
-  useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => (document.body.style.overflow = "");
-  }, [open]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMounted, setMenuMounted] = useState(false);
 
-  // detect scroll -> add shadow + blur + smaller height
+  const closeButtonRef = useRef(null);
+  const menuButtonRef = useRef(null);
+
+  // Close menu on route change
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Allow smooth closing animation
+  useEffect(() => {
+    if (menuOpen) {
+      setMenuMounted(true);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setMenuMounted(false);
+    }, 300);
+
+    return () => window.clearTimeout(timer);
+  }, [menuOpen]);
+
+  // Lock body scrolling and handle keyboard
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
+  // Close mobile menu on desktop resize
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const handleResize = (event) => {
+      if (event.matches) {
+        setMenuOpen(false);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
   }, []);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
-      {/* Spacer so content doesn't hide under fixed navbar */}
-      <div className="h-20 md:h-20" />
+      {/* Main navbar */}
+      <header className="sticky top-0 z-50 w-full border-b border-line bg-page/95 backdrop-blur-xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid h-[72px] grid-cols-[1fr_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
 
-      <header
-        className={[
-          "fixed left-0 top-0 z-50 w-full transition-all duration-300",
-          scrolled
-            ? "bg-white/85 backdrop-blur-md shadow-sm"
-            : "bg-white",
-        ].join(" ")}
-      >
-        <div className="mx-auto container px-4">
-          <div
-            className={[
-              "flex items-center justify-between transition-all duration-300",
-              scrolled ? "h-16" : "h-20",
-            ].join(" ")}
-          >
-            {/* Logo */}
-            <a href="#home" className="flex items-center gap-2">
-              <div
-                className={[
-                  "transition-all duration-300",
-                  scrolled ? "h-10 w-10" : "h-12 w-12",
-                ].join(" ")}
-              >
-                <img
-                  src={logo}
-                  alt="Logo"
-                  className="h-full w-full object-contain"
-                />
-              </div>
+            {/* Logo + brand */}
+            <Link
+              to="/"
+              onClick={closeMenu}
+              aria-label="Tifow Creatives home"
+              className="flex min-w-0 items-center gap-3 justify-self-start"
+            >
+              <img
+                src={logo}
+                alt=""
+                className="h-10 w-10 shrink-0 object-contain"
+              />
 
-              <div className="leading-none">
-                <div
-                  className={[
-                    "font-semibold tracking-wide text-[#9B1C1C] transition-all duration-300",
-                    scrolled ? "text-xl" : "text-2xl",
-                  ].join(" ")}
+              <span className="truncate text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
+                Tifow{" "}
+                <span className="text-brand">Creatives</span>
+              </span>
+            </Link>
+
+            {/* Desktop navigation */}
+            <nav
+              aria-label="Main navigation"
+              className="hidden h-full items-center justify-center gap-7 lg:flex xl:gap-9"
+            >
+              {navLinks.map(({ label, path }) => (
+                <NavLink
+                  key={path}
+                  to={path}
+                  end={path === "/"}
+                  className={({ isActive }) =>
+                    `group relative flex h-full items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-brand"
+                        : "text-zinc-600 hover:text-brand dark:text-zinc-400 dark:hover:text-white"
+                    }`
+                  }
                 >
-                  Tifow
-                </div>
-                <div className="-mt-0.5 text-sm text-[#9B1C1C]/70">
-                  creative
-                </div>
-              </div>
-            </a>
+                  {({ isActive }) => (
+                    <>
+                      {label}
 
-            {/* Desktop links */}
-            <nav className="hidden items-center gap-10 md:flex">
-              {navLinks.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-xl font-medium text-[#9B1C1C] hover:opacity-80"
-                >
-                  {item.label}
-                </a>
+                      <span
+                        className={`absolute bottom-0 left-0 h-[2px] w-full bg-brand transition-transform duration-200 ${
+                          isActive
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
               ))}
             </nav>
 
-            {/* Desktop button */}
-            <div className="hidden md:block">
-              <a
-                href="#contact"
-                className={[
-                  "rounded-md bg-[#9B1C1C] text-white font-semibold hover:opacity-90 transition-all duration-300",
-                  scrolled ? "px-5 py-2.5 text-sm" : "px-6 py-3 text-base",
-                ].join(" ")}
-              >
-                Contact Us
-              </a>
-            </div>
+            {/* Right actions */}
+            <div className="flex items-center justify-end gap-2 justify-self-end">
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setOpen(true)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-[#9B1C1C] hover:bg-[#9B1C1C]/10 md:hidden"
-              aria-label="Open menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+              {/* Desktop social icons */}
+              <div className="hidden items-center gap-1 xl:flex">
+                {socialLinks.map(({ label, href, icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit Tifow on ${label}`}
+                    title={label}
+                    className="flex h-10 w-10 items-center justify-center text-zinc-500 transition-colors duration-200 hover:text-brand dark:text-zinc-400 dark:hover:text-white"
+                  >
+                    <SocialIcon type={icon} size={18} />
+                  </a>
+                ))}
+              </div>
+
+              {/* Separator */}
+              <span
+                aria-hidden="true"
+                className="mx-1 hidden h-5 w-px bg-line xl:block"
+              />
+
+              {/* Global theme button */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label={
+                  isDark
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
+                title={isDark ? "Light mode" : "Dark mode"}
+                className="flex h-10 w-10 shrink-0 items-center justify-center border border-line text-zinc-800 transition-colors hover:border-brand hover:text-brand dark:text-zinc-200"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+                {isDark ? (
+                  <Sun size={18} strokeWidth={1.8} />
+                ) : (
+                  <Moon size={18} strokeWidth={1.8} />
+                )}
+              </button>
+
+              {/* Mobile menu trigger */}
+              <button
+                ref={menuButtonRef}
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open navigation"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-navigation"
+                className="flex h-10 w-10 items-center justify-center border border-line text-zinc-900 transition-colors hover:border-brand dark:text-white lg:hidden"
+              >
+                <Menu size={21} strokeWidth={1.8} />
+              </button>
+            </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile overlay + drawer */}
-        <div
-          className={`fixed inset-0 z-50 md:hidden ${
-            open ? "pointer-events-auto" : "pointer-events-none"
-          }`}
-          aria-hidden={!open}
-        >
-          {/* Overlay */}
-          <div
-            onClick={() => setOpen(false)}
-            className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
-              open ? "opacity-100" : "opacity-0"
+      {/* Mobile sidebar */}
+      {menuMounted && (
+        <div className="fixed inset-0 z-[100] lg:hidden">
+
+          {/* Backdrop */}
+          <button
+            type="button"
+            onClick={closeMenu}
+            aria-label="Close navigation overlay"
+            tabIndex={menuOpen ? 0 : -1}
+            className={`absolute inset-0 w-full bg-black/65 transition-opacity duration-300 ${
+              menuOpen
+                ? "opacity-100"
+                : "pointer-events-none opacity-0"
             }`}
           />
 
           {/* Drawer */}
           <aside
-            className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out
-            ${open ? "translate-x-0" : "translate-x-full"}`}
+            id="mobile-navigation"
             role="dialog"
-            aria-modal="true"
+            aria-modal={menuOpen ? "true" : undefined}
+            aria-label="Mobile navigation"
+            className={`absolute right-0 top-0 flex h-full w-[86%] max-w-[380px] flex-col border-l border-line bg-page transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              menuOpen
+                ? "translate-x-0"
+                : "pointer-events-none translate-x-full"
+            }`}
           >
-            {/* Drawer header */}
-            <div className="flex items-center justify-between border-b border-black/10 p-4">
-              <div className="flex items-center gap-2">
-                <div className="h-9 w-9">
-                  <img
-                    src={logo}
-                    alt="Logo"
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-                <div className="font-semibold text-[#9B1C1C]">Tifow</div>
-              </div>
+
+            {/* Drawer heading */}
+            <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-line px-5 sm:px-6">
+              <Link
+                to="/"
+                onClick={closeMenu}
+                className="flex items-center gap-2"
+              >
+                <img
+                  src={logo}
+                  alt=""
+                  className="h-9 w-9 object-contain"
+                />
+
+                <span className="text-base font-semibold text-zinc-900 dark:text-white">
+                  Tifow{" "}
+                  <span className="text-brand">
+                    Creatives
+                  </span>
+                </span>
+              </Link>
 
               <button
-                onClick={() => setOpen(false)}
-                className="rounded-md p-2 text-[#9B1C1C] hover:bg-[#9B1C1C]/10"
-                aria-label="Close menu"
+                ref={closeButtonRef}
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  menuButtonRef.current?.focus();
+                }}
+                aria-label="Close navigation"
+                className="flex h-10 w-10 items-center justify-center border border-line text-zinc-800 transition-colors hover:border-brand dark:text-white"
               >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <X size={20} strokeWidth={1.8} />
               </button>
             </div>
 
-            {/* Drawer content */}
-            <div className="p-4 bg-white min-h-screen ">
-              <nav className="flex flex-col gap-2">
-                {navLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-3 text-lg font-medium text-[#9B1C1C] hover:bg-[#9B1C1C]/10"
+            {/* Navigation links */}
+            <div className="flex-1 overflow-y-auto px-5 py-7 sm:px-6">
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
+                Navigation
+              </p>
+
+              <nav aria-label="Mobile navigation">
+                {navLinks.map(({ label, path }, index) => (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    end={path === "/"}
+                    onClick={closeMenu}
+                    className={({ isActive }) =>
+                      `group flex min-h-[60px] items-center justify-between border-b border-line transition-colors ${
+                        isActive
+                          ? "text-brand"
+                          : "text-zinc-800 hover:text-brand dark:text-zinc-300"
+                      }`
+                    }
                   >
-                    {item.label}
-                  </a>
+                    {({ isActive }) => (
+                      <>
+                        <span className="flex items-center gap-4">
+                          <span
+                            className={`w-6 text-xs ${
+                              isActive
+                                ? "text-brand"
+                                : "text-zinc-400 dark:text-zinc-500"
+                            }`}
+                          >
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+
+                          <span className="text-[16px] font-medium">
+                            {label}
+                          </span>
+                        </span>
+
+                        <ArrowUpRight
+                          size={18}
+                          strokeWidth={1.8}
+                          className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        />
+                      </>
+                    )}
+                  </NavLink>
                 ))}
               </nav>
 
-              <a
-                href="#contact"
-                onClick={() => setOpen(false)}
-                className="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-[#9B1C1C] px-5 py-3 text-sm font-semibold text-white hover:opacity-90"
+              {/* Contact CTA */}
+              <Link
+                to="/contact"
+                onClick={closeMenu}
+                className="btn-primary mt-8 flex w-full items-center justify-center gap-2"
               >
-                Contact Us
-              </a>
+                Let's Work Together
+                <ArrowUpRight size={17} strokeWidth={1.8} />
+              </Link>
+            </div>
+
+            {/* Drawer footer */}
+            <div className="shrink-0 border-t border-line px-5 py-6 sm:px-6">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  Follow Tifow
+                </span>
+
+                <div className="flex items-center gap-2">
+                  {socialLinks.map(({ label, href, icon }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Visit Tifow on ${label}`}
+                      className="flex h-10 w-10 items-center justify-center border border-line text-zinc-600 transition-colors hover:border-brand hover:text-brand dark:text-zinc-300"
+                    >
+                      <SocialIcon type={icon} size={18} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-6 border-t border-line pt-5 text-xs text-zinc-500 dark:text-zinc-400">
+                © {new Date().getFullYear()} Tifow Creatives
+              </p>
             </div>
           </aside>
         </div>
-      </header>
+      )}
     </>
   );
 }

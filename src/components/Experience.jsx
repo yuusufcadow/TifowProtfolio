@@ -1,193 +1,166 @@
-// Experience.jsx
-import React, { useEffect, useState } from "react";
+
+import {
+  BriefcaseBusiness,
+  CalendarDays,
+  MapPin,
+  ArrowUpRight,
+  Clapperboard,
+} from "lucide-react";
+
+import {
+  experiences,
+  formatExperiencePeriod,
+  getExperienceDuration,
+} from "../data/experience";
 
 export default function Experience() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setShow(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
-  const experience = [
-    {
-      period: "2022–2023",
-      company: "Infinity Media Solution",
-      role: "Designer & Video Editor",
-    },
-    {
-      period: "2023–2024",
-      company: "Turkey Studio",
-      role: "Videographer & Designer",
-    },
-    {
-      period: "2024 – Present",
-      company: "Voice Up Creative",
-      role: "Multimedia Specialist",
-    },
-  ];
+  const sortedExperiences = [...experiences].sort(
+    (a, b) => b.startYear - a.startYear
+  );
 
   return (
-    <section id="experience" className="w-full bg-[#EFE9EA]">
-      <div className="mx-auto container px-4 py-14 md:py-20">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-          {/* LEFT: Experience */}
-          <div>
-            <div
-              className={[
-                "flex items-center gap-4 transition-all duration-700",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-            >
-              <ExpIcon />
-              <h2
-                className="font-extrabold tracking-wide text-[#7A1A25]"
-                style={{ fontSize: "clamp(22px, 2.6vw, 34px)" }}
+    <section className="hero-grid min-h-screen bg-page">
+      <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-6 lg:py-24">
+
+        {/* Page Heading */}
+        <div className="mb-14 max-w-[750px]">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
+            Professional Journey
+          </p>
+
+          <h1 className="text-[clamp(38px,5vw,64px)] font-semibold leading-tight tracking-[-0.05em] text-zinc-950 dark:text-white">
+            Work Experience<span className="text-brand">.</span>
+          </h1>
+
+          <p className="mt-5 max-w-[620px] text-[15px] leading-8 text-zinc-600 dark:text-zinc-400">
+            My professional journey across media production,
+            video editing, cinematography, and creative
+            storytelling, collaborating with teams to produce
+            engaging visual content.
+          </p>
+        </div>
+
+        {/* Career Timeline */}
+        <div className="relative ml-2 border-l border-line pl-7 sm:ml-4 sm:pl-10">
+          {sortedExperiences.map((job) => {
+            const duration = getExperienceDuration(job);
+
+            return (
+              <article
+                key={job.id}
+                className="relative pb-8 last:pb-0"
               >
-                MY EXPERIENCE
-              </h2>
-            </div>
-
-            <div className="mt-8 space-y-10">
-              {experience.map((item, idx) => (
-                <FadeUp key={idx} show={show} delay={140 + idx * 120}>
-                  <div className="w-full max-w-xl rounded-xl bg-white px-6 py-4">
-                    <div className="text-sm font-extrabold text-[#7A1A25]">
-                      {item.period}
-                    </div>
-                    <div className="mt-1 text-sm text-[#7A1A25]">
-                      {item.company} <span className="text-[#7A1A25]/70">–</span>{" "}
-                      {item.role}
-                    </div>
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT: Education */}
-          <div>
-            <div
-              className={[
-                "flex items-center justify-center gap-4 transition-all duration-700 lg:justify-start",
-                show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              ].join(" ")}
-              style={{ transitionDelay: "120ms" }}
-            >
-              <CapIcon />
-              <h2
-                className="font-extrabold tracking-wide text-[#7A1A25]"
-                style={{ fontSize: "clamp(22px, 2.6vw, 34px)" }}
-              >
-                MY EDUCATION
-              </h2>
-            </div>
-
-            <FadeUp show={show} delay={220}>
-              <div className="mt-8 w-full max-w-md rounded-2xl bg-white p-8">
-                <h3
-                  className="font-extrabold text-[#7A1A25]"
-                  style={{ fontSize: "clamp(18px, 2vw, 22px)" }}
-                >
-                  Bachelor’s Degree in <br />
-                  Journalism &amp; Communication
-                </h3>
-
-                <p className="mt-3 text-sm font-semibold text-[#7A1A25]/80">
-                  Mogadishu University
-                </p>
-
-                <p className="mt-10 max-w-sm text-sm leading-relaxed text-[#7A1A25]/70">
-                  Strong background in media, communication, storytelling, and
-                  content strategy.
-                </p>
-
-                <div className="mt-10 flex items-end justify-between">
-                  <div className="text-sm text-[#7A1A25]/80">
-                    <div>Beging 2023</div>
-                    <div>Ending 2027</div>
-                  </div>
-
-                  <div className="opacity-25">
-                    <CapIconSmall />
-                  </div>
+                {/* Timeline Node */}
+                <div className="absolute -left-[35px] top-8 flex h-[15px] w-[15px] items-center justify-center border-[3px] border-brand bg-page sm:-left-[47px]">
+                  <div className="h-[3px] w-[3px] bg-brand" />
                 </div>
-              </div>
-            </FadeUp>
-          </div>
+
+                {/* Company Card */}
+                <div className="border border-line bg-page p-5 sm:p-7 lg:p-8">
+                  <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
+
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-line bg-surface text-brand">
+                        {job.logo ? (
+                          <img
+                            src={job.logo}
+                            alt=""
+                            loading="lazy"
+                            className="h-full w-full object-contain p-2"
+                          />
+                        ) : (
+                          <Clapperboard
+                            size={22}
+                            strokeWidth={1.6}
+                          />
+                        )}
+                      </div>
+
+                      <div>
+                        <h2 className="text-[20px] font-semibold tracking-tight text-zinc-950 dark:text-white">
+                          {job.role}
+                        </h2>
+
+                        <p className="mt-1 text-[15px] font-medium text-brand">
+                          {job.company}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex shrink-0 items-center gap-2 border border-line bg-surface px-3 py-2">
+                      <CalendarDays
+                        size={15}
+                        className="text-brand"
+                      />
+                      <span className="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">
+                        {formatExperiencePeriod(job)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+                    {job.location && (
+                      <span className="inline-flex items-center gap-2">
+                        <MapPin size={15} />
+                        {job.location}
+                      </span>
+                    )}
+
+                    {job.employmentType && (
+                      <span className="inline-flex items-center gap-2">
+                        <BriefcaseBusiness size={15} />
+                        {job.employmentType}
+                      </span>
+                    )}
+
+                    {duration && (
+                      <span>{duration}</span>
+                    )}
+                  </div>
+
+                  <p className="mt-6 max-w-3xl text-[14px] leading-7 text-zinc-600 dark:text-zinc-400 sm:text-[15px]">
+                    {job.description}
+                  </p>
+
+                  {job.responsibilities?.length > 0 && (
+                    <div className="mt-6 grid gap-x-8 gap-y-3 border-t border-line pt-6 sm:grid-cols-2">
+                      {job.responsibilities.map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-start gap-3"
+                        >
+                          <ArrowUpRight
+                            size={16}
+                            strokeWidth={1.8}
+                            className="mt-1 shrink-0 text-brand"
+                          />
+
+                          <span className="text-[13px] leading-6 text-zinc-600 dark:text-zinc-400">
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {job.tools?.length > 0 && (
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {job.tools.map((tool) => (
+                        <span
+                          key={tool}
+                          className="border border-line bg-surface px-3 py-2 text-xs text-zinc-600 dark:text-zinc-300"
+                        >
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-}
-
-/* ---------------- helpers ---------------- */
-
-function FadeUp({ show, delay = 0, children }) {
-  return (
-    <div
-      className={[
-        "transition-all duration-700",
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-      ].join(" ")}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* ---------------- icons (match screenshot style) ---------------- */
-
-function ExpIcon() {
-  return (
-    <div className="grid h-12 w-12 place-items-center rounded-xl border border-[#7A1A25]/25 bg-white">
-      <svg
-        viewBox="0 0 64 64"
-        className="h-7 w-7 text-[#C01B2D]"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-      >
-        <circle cx="32" cy="32" r="18" />
-        <circle cx="32" cy="32" r="6" />
-        <path d="M32 14v6M32 44v6M14 32h6M44 32h6" />
-      </svg>
-    </div>
-  );
-}
-
-function CapIcon() {
-  return (
-    <svg
-      viewBox="0 0 64 64"
-      className="h-12 w-12 text-[#C01B2D]"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3.2"
-      strokeLinejoin="round"
-      strokeLinecap="round"
-    >
-      <path d="M6 24l26-12 26 12-26 12L6 24Z" />
-      <path d="M16 30v12c0 6 8 10 16 10s16-4 16-10V30" />
-      <path d="M58 24v16" />
-    </svg>
-  );
-}
-
-function CapIconSmall() {
-  return (
-    <svg
-      viewBox="0 0 64 64"
-      className="h-12 w-12 text-[#C01B2D]"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3.2"
-      strokeLinejoin="round"
-      strokeLinecap="round"
-    >
-      <path d="M6 24l26-12 26 12-26 12L6 24Z" />
-      <path d="M16 30v12c0 6 8 10 16 10s16-4 16-10V30" />
-    </svg>
   );
 }
