@@ -1,268 +1,300 @@
-// Skills.jsx
-import React, { useEffect, useState } from "react";
 
-export default function Skills() {
-  const [show, setShow] = useState(false);
+import { Link } from "react-router-dom";
+import {
+  ArrowUpRight,
+  Camera,
+  Clapperboard,
+  WandSparkles,
+  Video,
+  Palette,
+  Megaphone,
+} from "lucide-react";
 
-  useEffect(() => {
-    const t = setTimeout(() => setShow(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+/* ---------------------------------------
+   MULTIMEDIA EXPERTISE
+--------------------------------------- */
+
+const skills = [
+  {
+    id: "digital-camera",
+    title: "Digital Camera Operation",
+    description:
+      "Professional digital camera operation, framing, composition, lighting, camera movement, and shooting techniques for high-quality video production.",
+    Icon: Camera,
+  },
+  {
+    id: "video-editing",
+    title: "Video Editing & Post-Production",
+    description:
+      "Editing documentaries, commercials, short films, and social media reels, including color correction, transitions, audio synchronization, and visual storytelling.",
+    Icon: Clapperboard,
+  },
+  {
+    id: "motion-graphics",
+    title: "Motion Graphics & Animation",
+    description:
+      "Creating advertising videos, character animation, animated titles, logo animations, motion design, and visual effects for engaging digital content.",
+    Icon: WandSparkles,
+  },
+  {
+    id: "videography",
+    title: "Videography & Film Production",
+    description:
+      "Producing professional video content, interviews, event coverage, documentaries, corporate productions, and creative visual stories.",
+    Icon: Video,
+  },
+  {
+    id: "graphic-design",
+    title: "Graphic Design & Branding",
+    description:
+      "Creating promotional posters, branding materials, social media graphics, marketing visuals, and professional digital designs.",
+    Icon: Palette,
+  },
+  {
+    id: "digital-content",
+    title: "Digital Content Production",
+    description:
+      "Developing branded social media advertisements, promotional reels, digital campaigns, and engaging multimedia content.",
+    Icon: Megaphone,
+  },
+];
+
+/* ---------------------------------------
+   SOFTWARE & CREATIVE TOOLS
+--------------------------------------- */
+
+const software = [
+  {
+    id: "premiere-pro",
+    name: "Adobe Premiere Pro",
+    abbreviation: "Pr",
+    category: "Video Editing",
+  },
+  {
+    id: "after-effects",
+    name: "Adobe After Effects",
+    abbreviation: "Ae",
+    category: "Motion Graphics",
+  },
+  {
+    id: "final-cut",
+    name: "Final Cut Pro",
+    abbreviation: "Fc",
+    category: "Video Editing",
+  },
+  {
+    id: "photoshop",
+    name: "Adobe Photoshop",
+    abbreviation: "Ps",
+    category: "Image Editing",
+  },
+  {
+    id: "illustrator",
+    name: "Adobe Illustrator",
+    abbreviation: "Ai",
+    category: "Vector Design",
+  },
+  {
+    id: "canva",
+    name: "Canva",
+    abbreviation: "Ca",
+    category: "Digital Design",
+  },
+];
+
+/* ---------------------------------------
+   SHARED DESIGN TOKENS
+--------------------------------------- */
+
+const ui = {
+  section:
+    "bg-page py-16 sm:py-20 lg:py-24",
+
+  container:
+    "container mx-auto px-4 sm:px-6 lg:px-6",
+
+  eyebrow:
+    "text-[11px] font-semibold uppercase tracking-[0.15em] text-brand",
+
+  heading:
+    "text-[clamp(34px,4.5vw,56px)] font-semibold leading-[1.12] tracking-[-0.055em] text-zinc-950 dark:text-white",
+
+  description:
+    "text-[14px] leading-7 text-zinc-600 dark:text-zinc-400 sm:text-[15px] sm:leading-8",
+
+  rowTitle:
+    "text-[18px] font-semibold leading-snug tracking-[-0.025em] text-zinc-950 dark:text-white sm:text-[20px]",
+
+  iconBox:
+    "flex h-12 w-12 shrink-0 items-center justify-center border border-line bg-surface text-brand transition-colors duration-200 group-hover:border-brand/40 group-hover:bg-brand/5",
+
+  button:
+    "group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 bg-brand px-6 text-[14px] font-semibold !text-white transition-colors duration-200 hover:bg-[#B32626] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+};
+
+/* ---------------------------------------
+   SKILL ROW
+--------------------------------------- */
+
+function SkillRow({ skill, isLast }) {
+  const Icon = skill.Icon;
 
   return (
-    <section id="skills" className="relative w-full bg-white">
-      <div className="mx-auto container relative px-4 py-12 md:py-20">
-        <div className="pointer-events-none absolute left-1/2 top-[54%] -translate-x-1/2 -translate-y-1/2">
-          <div className="h-28 w-28 rounded-full bg-[#9B1C1C]/35 blur-3xl" />
-        </div>
+    <article
+      className={`group grid gap-5 py-7 transition-colors duration-200 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:gap-10 sm:py-9 lg:gap-16 ${
+        isLast ? "" : "border-b border-line"
+      }`}
+    >
+      {/* Icon and skill name */}
+      <div className="flex min-w-0 items-start gap-4 sm:gap-5">
+        <span className={ui.iconBox}>
+          <Icon
+            size={22}
+            strokeWidth={1.7}
+            aria-hidden="true"
+          />
+        </span>
 
-        <div className="text-center">
-          <h2
-            className={[
-              "font-extrabold tracking-wide text-[#9B1C1C] transition-all duration-700",
-              show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-            ].join(" ")}
-            style={{ fontSize: "clamp(28px, 3.3vw, 44px)" }}
-          >
-            MY SKILLS
-          </h2>
-
-          <p
-            className={[
-              "mx-auto mt-3 max-w-xl text-black/60 transition-all duration-700",
-              show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-            ].join(" ")}
-            style={{
-              fontSize: "clamp(14px, 1.6vw, 18px)",
-              transitionDelay: "120ms",
-            }}
-          >
-            A collection of my technical skills and expertise <br />
-            honed through various projects and experiences
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-10">
-          <FadeUp show={show} delay={180}>
-            <SkillBox
-              leftItems={[
-                { icon: <MiniIcon kind="cam" />, text: "Cameraman & Videography" },
-                { icon: <MiniIcon kind="edit" />, text: "Video Editing & Motion Graphics" },
-                { icon: <MiniIcon kind="design" />, text: "Graphic Design & Branding" },
-              ]}
-              tools={<ToolsTop />}
-            />
-          </FadeUp>
-
-          <FadeUp show={show} delay={260}>
-            <SkillBox
-              leftItems={[
-                { icon: <MiniIcon kind="marketing" />, text: "Digital Marketing Strategy" },
-                {
-                  icon: <MiniIcon kind="figma" />,
-                  text: "UI/UX & Figma Design\nMobile App & Website Design",
-                },
-                { icon: <MiniIcon kind="web" />, text: "Website & development" },
-              ]}
-              tools={<ToolsBottom />}
-            />
-          </FadeUp>
-        </div>
+        <h3 className={`${ui.rowTitle} pt-2.5`}>
+          {skill.title}
+        </h3>
       </div>
-    </section>
+
+      {/* Description */}
+      <div className="min-w-0 sm:pt-2">
+        <p className={ui.description}>
+          {skill.description}
+        </p>
+      </div>
+    </article>
   );
 }
 
-function SkillBox({ leftItems, tools }) {
+/* ---------------------------------------
+   SOFTWARE ENTRY
+--------------------------------------- */
+
+function SoftwareItem({ tool }) {
   return (
-    <div className="rounded-2xl border border-[#9B1C1C]/55 bg-white px-6 py-8 md:px-12 md:py-12">
-      <div className="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <h3
-            className="font-extrabold text-[#9B1C1C]"
-            style={{ fontSize: "clamp(22px, 2.6vw, 36px)" }}
+    <div className="group flex min-w-0 items-center gap-4 border-b border-line py-5">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center border border-line bg-surface text-[15px] font-semibold tracking-tight text-brand transition-colors duration-200 group-hover:border-brand/40">
+        {tool.abbreviation}
+      </span>
+
+      <div className="min-w-0">
+        <h3 className="text-[15px] font-semibold tracking-[-0.02em] text-zinc-950 dark:text-white">
+          {tool.name}
+        </h3>
+
+        <p className="mt-1 text-[12px] text-zinc-500 dark:text-zinc-400">
+          {tool.category}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------
+   MAIN COMPONENT
+--------------------------------------- */
+
+export default function Skills() {
+  return (
+    <section
+      id="skills"
+      aria-labelledby="skills-heading"
+      className={ui.section}
+    >
+      <div className={ui.container}>
+
+        {/* SECTION HEADER */}
+        <div className="mb-10 flex flex-col justify-between gap-7 lg:mb-12 lg:flex-row lg:items-end lg:gap-12">
+
+          <div className="max-w-2xl">
+            <p className={ui.eyebrow}>
+              Professional Capabilities
+            </p>
+
+            <h2
+              id="skills-heading"
+              className={`${ui.heading} mt-4`}
+            >
+              Multimedia{" "}
+              <span className="text-brand">
+                Expertise.
+              </span>
+            </h2>
+
+            <p className={`${ui.description} mt-5 max-w-xl`}>
+              Combining digital camera operation,
+              professional video editing, motion graphics,
+              and creative storytelling to deliver
+              impactful multimedia productions.
+            </p>
+          </div>
+
+          <Link
+            to="/projects"
+            className={`${ui.button} self-start lg:self-end`}
           >
-            MY SKILLS
-          </h3>
+            <span className="!text-white">
+              Explore My Work
+            </span>
 
-          <div className="mt-6 space-y-5">
-            {leftItems.map((it, idx) => (
-              <div key={idx} className="flex items-start gap-4">
-                <div className="h-12 w-12 shrink-0">{it.icon}</div>
+            <ArrowUpRight
+              size={18}
+              strokeWidth={1.8}
+              aria-hidden="true"
+              className="!text-white transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
+            />
+          </Link>
+        </div>
 
-                <p
-                  className="whitespace-pre-line pt-2 text-black/75"
-                  style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
-                >
-                  {it.text}
-                </p>
-              </div>
+        {/* CLEAN SKILLS LIST */}
+        <div>
+          {skills.map((skill, index) => (
+            <SkillRow
+              key={skill.id}
+              skill={skill}
+              isLast={index === skills.length - 1}
+            />
+          ))}
+        </div>
+
+        {/* SOFTWARE & TOOLS */}
+        <div className="mt-16 sm:mt-20 lg:mt-24">
+
+          {/* Software Heading */}
+          <div className="max-w-2xl">
+            <p className={ui.eyebrow}>
+              Creative Workflow
+            </p>
+
+            <h2 className={`${ui.heading} mt-4`}>
+              Tools &{" "}
+              <span className="text-brand">
+                Software.
+              </span>
+            </h2>
+
+            <p className={`${ui.description} mt-5 max-w-xl`}>
+              Professional creative tools supporting
+              video editing, motion graphics,
+              post-production, and visual design.
+            </p>
+          </div>
+
+          {/* Software List */}
+          <div className="mt-9 grid gap-x-12 sm:grid-cols-2 lg:gap-x-20">
+            {software.map((tool) => (
+              <SoftwareItem
+                key={tool.id}
+                tool={tool}
+              />
             ))}
           </div>
         </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <h3
-            className="text-center font-extrabold text-[#9B1C1C]"
-            style={{ fontSize: "clamp(22px, 2.6vw, 36px)" }}
-          >
-            TOOLS &amp; SOFTWARE
-          </h3>
-
-          <div className="mt-10 w-full">{tools}</div>
-        </div>
       </div>
-    </div>
-  );
-}
-
-function FadeUp({ show, delay = 0, children }) {
-  return (
-    <div
-      className={[
-        "transition-all duration-700",
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-      ].join(" ")}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* mini icons */
-function MiniIcon({ kind }) {
-  return (
-    <div className="grid h-12 w-12 place-items-center rounded-lg border border-[#9B1C1C]/55 bg-white text-[#9B1C1C]">
-      {kind === "cam" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M14 22h10l6-6h12l6 6h10v26H14V22z" />
-          <circle cx="32" cy="35" r="10" />
-        </svg>
-      )}
-      {kind === "edit" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <rect x="12" y="16" width="40" height="32" rx="4" />
-          <path d="M22 40l8-8 6 6 10-10" />
-        </svg>
-      )}
-      {kind === "design" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M18 46l14-28 14 28" />
-          <path d="M24 34h16" />
-        </svg>
-      )}
-      {kind === "marketing" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M14 34h10l18 10V20L24 30H14v4z" />
-          <path d="M14 30v8" />
-        </svg>
-      )}
-      {kind === "figma" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M32 10c-6 0-10 4-10 10s4 10 10 10h10c6 0 10-4 10-10s-4-10-10-10H32z" />
-          <path d="M32 30H22c-6 0-10 4-10 10s4 10 10 10h10V30z" />
-        </svg>
-      )}
-      {kind === "web" && (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3">
-          <rect x="12" y="16" width="40" height="32" rx="4" />
-          <path d="M12 26h40" />
-          <path d="M20 36h10" />
-          <path d="M20 42h18" />
-        </svg>
-      )}
-    </div>
-  );
-}
-
-/* tools */
-function ToolsTop() {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-      <BorderBox className="h-20 w-24 rounded-2xl">
-        <svg
-          viewBox="0 0 64 64"
-          className="h-14 w-14 text-[#9B1C1C]"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3.2"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        >
-          <path d="M14 22h10l6-6h12l6 6h10v26H14V22z" />
-          <circle cx="32" cy="35" r="10" />
-        </svg>
-      </BorderBox>
-
-      <BorderBox className="h-20 w-20 rounded-2xl">
-        <span className="font-extrabold text-[#9B1C1C]" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-          Pr
-        </span>
-      </BorderBox>
-
-      <BorderBox className="h-20 w-20 rounded-2xl">
-        <span className="font-extrabold text-[#9B1C1C]" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-          Ae
-        </span>
-      </BorderBox>
-
-      <BorderBox className="h-20 w-20 rounded-2xl">
-        <span className="font-extrabold text-[#9B1C1C]" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-          Ai
-        </span>
-      </BorderBox>
-    </div>
-  );
-}
-
-function ToolsBottom() {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-8 md:gap-10">
-      {/* NOW BORDERS FOR ALL 3, SAME STYLE */}
-      <BorderBox className="h-24 w-24 rounded-2xl">
-        <svg viewBox="0 0 64 64" className="h-14 w-14 text-[#9B1C1C]" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M18 14h22v36H18z" />
-          <path d="M40 20h6v24h-6z" />
-          <path d="M22 22h14" />
-          <path d="M22 30h10" />
-          <rect x="22" y="36" width="14" height="10" rx="2" />
-        </svg>
-      </BorderBox>
-
-      <BorderBox className="h-24 w-24 rounded-2xl">
-        <svg viewBox="0 0 64 64" className="h-14 w-14 text-[#9B1C1C]" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M26 10h12a10 10 0 0 1 0 20H26a10 10 0 0 1 0-20Z" />
-          <path d="M26 30h12a10 10 0 0 1 0 20H26a10 10 0 0 1 0-20Z" />
-          <path d="M38 30a10 10 0 1 0 0 20" />
-        </svg>
-      </BorderBox>
-
-      <BorderBox className="h-24 w-24 rounded-2xl">
-        <svg viewBox="0 0 64 64" className="h-14 w-14 text-[#9B1C1C]" fill="none" stroke="currentColor" strokeWidth="3">
-          <rect x="14" y="14" width="36" height="36" rx="8" />
-          <circle cx="32" cy="32" r="7" />
-          <path d="M32 19v6M32 39v6M19 32h6M39 32h6" />
-          <circle cx="22" cy="22" r="1.5" />
-          <circle cx="42" cy="22" r="1.5" />
-          <circle cx="22" cy="42" r="1.5" />
-          <circle cx="42" cy="42" r="1.5" />
-        </svg>
-      </BorderBox>
-    </div>
-  );
-}
-
-function BorderBox({ children, className = "" }) {
-  return (
-    <div
-      className={[
-        "grid place-items-center bg-white",
-        "border border-[#9B1C1C]", // stronger border so you can see it 100%
-        className,
-      ].join(" ")}
-    >
-      {children}
-    </div>
+    </section>
   );
 }
